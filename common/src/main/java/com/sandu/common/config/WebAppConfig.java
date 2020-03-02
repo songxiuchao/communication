@@ -63,7 +63,7 @@ public class WebAppConfig extends WebMvcConfigurationSupport {
                 .select()
                 //为当前包路径
 
-                .apis(RequestHandlerSelectors.basePackage("com.kzdata.jmcloud"))
+                .apis(RequestHandlerSelectors.basePackage("com.sandu"))
                 .paths(PathSelectors.any())
                 .build()
 //                .globalOperationParameters(pars)
@@ -78,13 +78,13 @@ public class WebAppConfig extends WebMvcConfigurationSupport {
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 //页面标题
-                .title("OMS API")
+                .title("erp API")
                 //创建人
-                .contact(new Contact("zhouqi", "http://jmcloud.kzdata.com", "17784574@qq.com"))
+                .contact(new Contact("xiaobing", "http://jmcloud.kzdata.com", "1043263723@qq.com"))
                 //版本号
                 .version("1.0")
                 //描述
-                .description("订单管理系统")
+                .description("erp管理系统")
                 .build();
     }
 
