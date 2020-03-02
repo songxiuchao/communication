@@ -51,79 +51,80 @@ public class LoginUserInformationInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
 
-
-        /*
-        swagger不需要进行拦截
-         */
-        String uri = request.getRequestURI();
-        String requestMethod = request.getMethod();
-        if ((!StringUtils.isEmpty(requestMethod)) && requestMethod.equals("OPTIONS")) {
-            response.setStatus(HttpServletResponse.SC_OK);
-            return true;
-        }
-
-        if (uri.contains("swagger")) {
-            return Boolean.TRUE;
-        }
-
-
-        String header = request.getHeader("Authorization");
-
-        if (header == null || !header.startsWith("Bearer ")) {  //若获取不到 TOKEN 的存在
-//            response.setContentType("application/json;charset=utf-8");
-//            PrintWriter out = response.getWriter();
-//            ReturnValueLoader rvl = new ReturnValueLoader(ResultCode.NO_AUTH_CODE);
-//            out.write(GsonUtil.getJson(rvl));
-//            out.flush();
-//            out.close();
-//            return Boolean.FALSE;
-            CommonRequestHolder.init(1L, "1", 2L, "1");
-            return true;
-//            return false;
-        } else {    //若存在 TOKEN
-
-            //解析 TOKEN
-            JWTUtil.JWTResult jwtResult = JWTUtil.getInstance().checkToken(header.replace("Bearer ", ""), "meaqua");
-
-
-            if (jwtResult.isStatus()) {    //若 TOKEN 合法
-
-                /*
-                从 TOKEN 中得到解密出来的 userId 和 unitId
-                 */
-                int userId = Integer.parseInt(jwtResult.getUserId());
-                int unitId = Integer.parseInt(jwtResult.getUnitId());
-
-                //同 JedisPool 中得到一个链接
-                Jedis jedis = this.jedisPool.getResource();
-
-                //根据 userId 从 Redis 中得到用户信息字符串
-                String userStr = jedis.hget("user", jwtResult.getUserId());
-
-                //新版本中直接执行关闭操作，若有连接池则会缓存回连接池，若不存在连接池则直接执行关闭操作
-                jedis.close();
-
-                //将用户信息 JSON 串转换为对象
-                RedisUser redisUser = (RedisUser) GsonUtil.getObject(userStr, RedisUser.class);
-
-                //初始化当前线程登陆用户状态
-                //CommonRequestHolder.init((long)userId, redisUser.getRealName(), Long.parseLong(redisUser.getOrganizationId()), redisUser.getOrganizationName());
-
-                CommonRequestHolder.init((long)userId, redisUser.getRealName(), (long)unitId, redisUser.getOrganizationName());
-
-
-
-                return Boolean.TRUE;
-            } else {    //若 TOKEN 不合法
-                response.setContentType("application/json;charset=utf-8");
-                PrintWriter out = response.getWriter();
-                ReturnValueLoader rvl = new ReturnValueLoader(ResultCode.NO_AUTH_CODE);
-                out.write(GsonUtil.getJson(rvl));
-                out.flush();
-                out.close();
-                return Boolean.FALSE;
-            }
-        }
+//
+//        /*
+//        swagger不需要进行拦截
+//         */
+//        String uri = request.getRequestURI();
+//        String requestMethod = request.getMethod();
+//        if ((!StringUtils.isEmpty(requestMethod)) && requestMethod.equals("OPTIONS")) {
+//            response.setStatus(HttpServletResponse.SC_OK);
+//            return true;
+//        }
+//
+//        if (uri.contains("swagger")) {
+//            return Boolean.TRUE;
+//        }
+//
+//
+//        String header = request.getHeader("Authorization");
+//
+//        if (header == null || !header.startsWith("Bearer ")) {  //若获取不到 TOKEN 的存在
+////            response.setContentType("application/json;charset=utf-8");
+////            PrintWriter out = response.getWriter();
+////            ReturnValueLoader rvl = new ReturnValueLoader(ResultCode.NO_AUTH_CODE);
+////            out.write(GsonUtil.getJson(rvl));
+////            out.flush();
+////            out.close();
+////            return Boolean.FALSE;
+//            CommonRequestHolder.init(1L, "1", 2L, "1");
+//            return true;
+////            return false;
+//        } else {    //若存在 TOKEN
+//
+//            //解析 TOKEN
+//            JWTUtil.JWTResult jwtResult = JWTUtil.getInstance().checkToken(header.replace("Bearer ", ""), "meaqua");
+//
+//
+//            if (jwtResult.isStatus()) {    //若 TOKEN 合法
+//
+//                /*
+//                从 TOKEN 中得到解密出来的 userId 和 unitId
+//                 */
+//                int userId = Integer.parseInt(jwtResult.getUserId());
+//                int unitId = Integer.parseInt(jwtResult.getUnitId());
+//
+//                //同 JedisPool 中得到一个链接
+//                Jedis jedis = this.jedisPool.getResource();
+//
+//                //根据 userId 从 Redis 中得到用户信息字符串
+//                String userStr = jedis.hget("user", jwtResult.getUserId());
+//
+//                //新版本中直接执行关闭操作，若有连接池则会缓存回连接池，若不存在连接池则直接执行关闭操作
+//                jedis.close();
+//
+//                //将用户信息 JSON 串转换为对象
+//                RedisUser redisUser = (RedisUser) GsonUtil.getObject(userStr, RedisUser.class);
+//
+//                //初始化当前线程登陆用户状态
+//                //CommonRequestHolder.init((long)userId, redisUser.getRealName(), Long.parseLong(redisUser.getOrganizationId()), redisUser.getOrganizationName());
+//
+//                CommonRequestHolder.init((long)userId, redisUser.getRealName(), (long)unitId, redisUser.getOrganizationName());
+//
+//
+//
+//                return Boolean.TRUE;
+//            } else {    //若 TOKEN 不合法
+//                response.setContentType("application/json;charset=utf-8");
+//                PrintWriter out = response.getWriter();
+//                ReturnValueLoader rvl = new ReturnValueLoader(ResultCode.NO_AUTH_CODE);
+//                out.write(GsonUtil.getJson(rvl));
+//                out.flush();
+//                out.close();
+//                return Boolean.FALSE;
+//            }\
+        return true;
+//        }
 
     }
     @Override

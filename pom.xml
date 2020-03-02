@@ -68,10 +68,10 @@
 
 
         <!-- Mysql -->
-        <mysql.version>5.1.41</mysql.version>
+       <sqlserver.version>4.0</sqlserver.version>
 
         <!-- swagger -->
-        <swagger.version>2.8.0</swagger.version>
+        <swagger.version>2.9.2</swagger.version>
 
         <jwt.version>0.7.0</jwt.version>
 
@@ -131,11 +131,10 @@
             </dependency>
 
 
-            <!--MySql start-->
             <dependency>
-                <groupId>mysql</groupId>
-                <artifactId>mysql-connector-java</artifactId>
-                <version>${mysql.version}</version>
+                <groupId>com.microsoft.sqlserver</groupId>
+                <artifactId>sqljdbc4</artifactId>
+                <version>${sqlserver.version}</version>
                 <scope>runtime</scope>
             </dependency>
 

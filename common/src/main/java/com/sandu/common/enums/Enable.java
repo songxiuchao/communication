@@ -14,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
  * ---------------------------------------------------------------------------------*
  * 2020-02-18 10:30     xiaobing          v1.0.0           Created
  */
+
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum Enable {
 
