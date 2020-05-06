@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sandu.erp.dao.UserErrorMessageDao">
+
+    <!--保存用户错误信息-->
+    <insert id="saveInfo" useGeneratedKeys="true" keyProperty="id">
+        insert into user_errormessage
+        (user_key,user_value,number,status,time)
+        values
+        (#{userKey}, #{userValue}, #{number}, #{status}, #{time})
+    </insert>
+
+    <!--更新失败次数-->
+    <update id="updateErrorMessageNum">
+        update user_errormessage
+        set number = #{num}
+        where id= #{id}
+    </update>
+    <!--删除重新发送成功的失败信息-->
+    <update id="deleteErrorMessage">
+        update user_errormessage
+        set status = 1
+        where id = #{id}
+    </update>
+
+    <!--查询发送失败的用户信息-->
+    <select id="getErrorUserMessageInfo" resultType="com.sandu.erp.vo.UserErrorMessage.UserErrorMessage">
+        select * from user_errormessage
+        WHERE status = 0
+    </select>
+    <!--判断是否已经存在发送失败的消息-->
+    <select id="getErrorMessageIsExist" resultType="com.sandu.erp.vo.UserErrorMessage.UserErrorMessage">
+        select * from user_errormessage
+        <where>
+            <if test="id != null ">
+                 id = #{id}
+            </if>
+        </where>
+    </select>
+
+</mapper>

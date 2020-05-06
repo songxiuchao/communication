@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sandu.erp.dao.ListingUserDao">
+    
+    <sql id="getListingList">
+        id,house_id,house_building_id,target_id,
+        house_building,floor,house_unit,house_name,building_area,building_price,
+        price,house_status,customer_id,name,mobile,customer_status,
+        subscribe_amount,subscribe_date,sign_amount,sign_date,
+        process_state,is_check_out, is_room_change
+    </sql>
+    <!--更新同步状态-->
+    <update id="updateStatus">
+        update changeuserhouseinfo
+        set process_state = 2
+        where id = #{id}
+    </update>
+
+    <!--获取新增的用户状态，房源信息-->
+    <select id="getListingInfo" resultType="com.sandu.erp.vo.ChangeUserHouseInfo">
+        select
+        <include refid="getListingList"/>
+        from
+        changeuserhouseinfo
+        where process_state = 1
+    </select>
+
+    <!--根据用户id获取楼盘信息-->
+    <select id="getSalesSystemInfo" resultType="com.sandu.erp.vo.ListingUserInfo">
+        select
+        <include refid="getListingList"/>
+        from changeuserhouseinfo
+        where house_id=#{propertyId}
+    </select>
+    <!--通过用户id查询propertyId-->
+    <select id="getPropertyId" resultType="java.lang.String">
+        select property_id from userproperty
+        where user_id=#{userId}
+    </select>
+
+
+</mapper>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sandu.erp.dao.ReceiveDao">
+
+    <!--存储新增的客户信息-->
+    <insert id="saveReceiveInfo" useGeneratedKeys="true" keyProperty="id" >
+        insert into userinfo
+        (user_id,user_name,user_sex,user_phone,user_address,
+        user_card,consultant_id,consultant_name,intention_level,
+        customer_source,customer_status,classify)
+        values
+        (#{userId},#{userName},#{userSex},#{userPhone},
+        #{userAddress},#{userCard},#{consultantId},#{consultantName},
+        #{intentionLevel},#{customerSource},#{customerStatus},#{classify});
+    </insert>
+
+    <!--保存关联客户-->
+    <insert id="saveJoinUserInfo" useGeneratedKeys="true" keyProperty="id" >
+        insert into joinuserinfo
+        (user_id,join_customer_id,
+        related_user_name,related_user_sex,related_user_phone)
+        values
+        (#{userId},#{joinCustomerId},
+        #{relatedUserName},#{relatedUserSex},#{relatedUserPhone})
+    </insert>
+    <!--存储用户对应的楼盘-->
+    <insert id="savePropertyInfo" useGeneratedKeys="true" keyProperty="id" >
+        insert into userproperty
+        (user_id,property_id)
+        values
+        (#{userId},#{propertyId})
+    </insert>
+
+    <!--更新客户信息-->
+    <update id="updateReceiveInfo">
+        update userinfo
+        set user_name = #{userName},user_sex = #{userSex},
+        user_phone = #{userSex},user_address = #{userAddress} ,user_card = #{userCard},
+        consultant_id = #{consultantId},consultant_name = #{consultantName},
+        intention_level = #{intentionLevel},customer_source = #{customerSource},
+        customer_status = #{customerStatus},classify = #{classify}
+        where user_id = #{userId}
+    </update>
+    <!--更新关联客户信息-->
+    <update id="updateJoinUserInfo">
+        update joinuserinfo
+        set
+        related_user_name = #{relatedUserName},related_user_sex = #{relatedUserSex},
+        related_user_phone = #{relatedUserPhone)
+    </update>
+    <!--删除该userId对应的关联客户-->
+    <delete id="deleteJoinUserInfo">
+        delete from joinuserinfo
+        where user_id = #{userId}
+    </delete>
+    <!--删除用户信息-->
+    <delete id="deleteUserInfo">
+        delete from userinfo
+        where id = #{id}
+    </delete>
+    <delete id="deleteJoinUserInfoById">
+       delete from joinuserinfo
+       where id = #{id}
+    </delete>
+    <!--删除userproperty表信息-->
+    <delete id="deleteUserpropertyInfo">
+        delete from userproperty
+        where id = #{id}
+    </delete>
+    <!--判断用户是否已经存在-->
+    <select id="userIsExist" resultType="java.lang.Boolean">
+        select  count(1) from  userproperty
+        where user_id=#{userId}
+    </select>
+    <!--判断该楼盘下用户存不存在-->
+    <select id="userIsExistInHouse" resultType="java.lang.Integer">
+        select count(1) from userproperty
+        where user_id = #{userId} and property_id = #{propertyId}
+    </select>
+</mapper>
