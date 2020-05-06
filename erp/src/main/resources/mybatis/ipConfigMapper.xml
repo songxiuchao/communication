@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sandu.erp.dao.IpConfigDao">
+
+    <sql id="ipInfo">
+        id,ip,user_id,property_id
+    </sql>
+
+    <!--保存ip-->
+    <insert id="saveIp">
+        insert into propertyinfo
+        (ip,user_id,property_id)
+        values
+        (#{ip},#{userId},#{propertyId})
+    </insert>
+
+    <update id="updateById">
+        update propertyinfo
+        set ip=#{ip},user_id=#{userId},property_id=#{propertyId}
+        where id=#{id}
+    </update>
+
+    <!--删除ip-->
+    <delete id="deleteIp">
+        delete  from propertyinfo
+        where id=#{id}
+    </delete>
+
+    <!--通过ip查询详情-->
+    <select id="getByIp" resultType="com.sandu.erp.vo.IpConfig">
+        select
+        <include refid="ipInfo"/>
+        from propertyinfo
+       <where>
+           <if test="ip != null">
+                ip=#{ip}
+           </if>
+       </where>
+    </select>
+</mapper>

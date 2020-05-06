@@ -11,19 +11,12 @@
     </parent>
 
     <groupId>com.sandu</groupId>
-    <artifactId>erp_parent</artifactId>
+    <artifactId>sdParent</artifactId>
     <packaging>pom</packaging>
     <version>1.0.0</version>
-    <name>erp_parent</name>
+    <name>SdParent</name>
     <url>http://sandu.erp.com</url>
     <description>sandu</description>
-
-
-    <modules>
-        <module>common</module>
-        <module>erp</module>
-    </modules>
-
 
     <properties>
 
@@ -79,58 +72,9 @@
 
     </properties>
 
-
-    <dependencies>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.12</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
-
     <dependencyManagement>
 
         <dependencies>
-
-
-            <!-- Apache start -->
-
-            <dependency>
-                <groupId>commons-httpclient</groupId>
-                <artifactId>commons-httpclient</artifactId>
-                <version>3.0.1</version>
-            </dependency>
-
-
-            <!-- Apache ent -->
-
-
-            <!--jedis begin-->
-
-            <dependency>
-                <groupId>redis.clients</groupId>
-                <artifactId>jedis</artifactId>
-                <version>${jedis.version}</version>
-            </dependency>
-
-            <!--jedis end-->
-
-
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-dependencies</artifactId>
-                <version>${spring-cloud.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-
-
             <dependency>
                 <groupId>com.microsoft.sqlserver</groupId>
                 <artifactId>sqljdbc4</artifactId>
@@ -178,38 +122,6 @@
 
             <!--数据库连接池 start-->
 
-            <!--JSON start-->
-
-            <dependency>
-                <groupId>com.google.code.gson</groupId>
-                <artifactId>gson</artifactId>
-                <version>${gson.version}</version>
-            </dependency>
-
-            <!--JSON end-->
-
-            <!-- Shiro start-->
-
-            <dependency>
-                <groupId>org.apache.shiro</groupId>
-                <artifactId>shiro-web</artifactId>
-                <version>${shiro.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.shiro</groupId>
-                <artifactId>shiro-core</artifactId>
-                <version>${shiro.version}</version>
-            </dependency>
-            <!--<dependency>-->
-            <!--<groupId>org.apache.shiro</groupId>-->
-            <!--<artifactId>shiro-spring</artifactId>-->
-            <!--<version>${shiro.version}</version>-->
-            <!--</dependency>-->
-
-
-            <!-- Shiro end-->
-
-            <!-- log4j start -->
 
             <dependency>
                 <groupId>log4j</groupId>
@@ -226,30 +138,6 @@
                 <artifactId>dom4j</artifactId>
                 <version>${dom4j.version}</version>
             </dependency>
-
-            <!-- dom4j end -->
-
-            <!--swagger start -->
-            <dependency>
-                <groupId>io.springfox</groupId>
-                <artifactId>springfox-swagger2</artifactId>
-                <version>${swagger.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.springfox</groupId>
-                <artifactId>springfox-swagger-ui</artifactId>
-                <version>${swagger.version}</version>
-            </dependency>
-
-            <!--swagger end -->
-
-
-            <dependency>
-                <groupId>io.jsonwebtoken</groupId>
-                <artifactId>jjwt</artifactId>
-                <version>${jwt.version}</version>
-            </dependency>
-
 
 
             <dependency>

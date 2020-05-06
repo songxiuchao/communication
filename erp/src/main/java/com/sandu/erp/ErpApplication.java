@@ -1,9 +1,12 @@
 package com.sandu.erp;
 
+import com.sandu.erp.config.Properties;
+import com.sandu.erp.config.WebSocketServer;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.stereotype.Repository;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.ConfigurableApplicationContext;
 
 
 /**
@@ -19,14 +22,14 @@ import org.springframework.stereotype.Repository;
  * 2020-02-29 18:00     xiaobing          v1.0.0           Created
  *
  */
-@SpringBootApplication(scanBasePackages = "com.sandu")
-@MapperScan(basePackages = "com.sandu.erp",annotationClass = Repository.class)
+@SpringBootApplication
+@MapperScan("com.sandu.erp.dao")
+@EnableConfigurationProperties(Properties.class)
 public class ErpApplication {
 
-
     public static void main(String[] args) {
-        SpringApplication.run(ErpApplication.class, args);
+        ConfigurableApplicationContext run = SpringApplication.run(ErpApplication.class, args);
+        WebSocketServer.setApplicationContext(run);
     }
-
 
 }

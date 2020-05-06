@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sandu.erp.dao.UserDao">
+
+    <sql id="userInfo">
+        property_id,user_id,user_name,user_sex,
+        user_phone,user_address,user_card,consultant_id,consultant_name,
+        intention_level,customer_source,customer_status,classify
+    </sql>
+
+    <!--将客户信息保存下来-->
+    <insert id="saveMessage">
+        insert into userinfo_kh
+        (<include refid="userInfo"/>)
+        values
+        (#{propertyId},#{userId},#{userName},#{userSex},#{userPhone},
+        #{userAddress},#{userCard},#{consultantId},#{consultantName},
+        #{intentionLevel},#{customerSource},#{customerStatus},#{classify})
+    </insert>
+    <!--新增关联客户信息-->
+    <insert id="addJoinMessage">
+       insert into joinuserinfo_kh
+        (user_id,join_customer_id,
+        related_user_name,related_user_sex,related_user_phone)
+        values
+        (#{userId},#{joinCustomerId},
+        #{relatedUserName},#{relatedUserSex},#{relatedUserPhone})
+    </insert>
+    <!--更新用户-->
+    <update id="updateMessage">
+        update userinfo_kh
+        set user_name = #{userName},user_sex = #{userSex},
+        user_phone = #{userSex},user_address = #{userAddress} ,user_card = #{userCard},
+        consultant_id = #{consultantId},consultant_name = #{consultantName},
+        intention_level = #{intentionLevel},customer_source = #{customerSource},
+        customer_status = #{customerStatus},classify = #{classify}
+        where user_id = #{userId}
+    </update>
+    <!--删除关联客户信息-->
+    <delete id="deleteJoinMessage">
+        delete from joinuserinfo_kh
+        where user_id = #{userId}
+    </delete>
+
+    <select id="getUserInfoList" resultType="com.sandu.erp.vo.UserInfo">
+        select *  from   userinfo_kh
+        <where>
+            <if test="userName != null and userName != ''">
+                    user_name=#{userName}
+            </if>
+            <if test="userPhone != null and userPhone != ''">
+                user_phone=#{userPhone}
+            </if>
+            <if test="consultantId != null and consultantId != ''">
+                consultant_id=#{consultantId}
+            </if>
+        </where>
+    </select>
+
+    <!--判断用户是否录入-->
+    <select id="getUserIdExist" resultType="java.lang.Boolean">
+        select count(user_id) from  userinfo_kh
+        where user_id = #{userId}
+    </select>
+</mapper>

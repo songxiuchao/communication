@@ -1,0 +1,223 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>Java后端WebSocket的Tomcat实现</title>
+</head>
+
+<script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+<body>
+Welcome<br/><input id="text" type="text"/>
+<button onclick="send()">发送消息</button>
+<hr/>
+<!--role:发送消息人的编号-->
+发送人:<div id="role">101.201.196.18</div>
+接收人：<input type="text" id="roleto">101.201.196.17<br>
+<button onclick="closeWebSocket()">关闭WebSocket连接</button>
+<hr/>
+<div id="message"></div>
+</body>
+
+
+<script type="text/javascript">
+    var websocket = null;
+    var role=document.getElementById('role').innerHTML;
+    //判断当前浏览器是否支持WebSocket
+    if ('WebSocket' in window) {
+        websocket = new WebSocket("ws://localhost:8088/sd/ws/"+role);
+    }
+    else {
+        alert('当前浏览器 Not support websocket')
+    }
+
+
+    //连接发生错误的回调方法
+    websocket.onerror = function () {
+        setMessageInnerHTML("WebSocket连接发生错误");
+    };
+
+
+    //连接成功建立的回调方法
+    websocket.onopen = function () {
+        setMessageInnerHTML("WebSocket连接成功");
+    }
+
+    //接收到消息的回调方法
+    websocket.onmessage = function (event) {
+        setMessageInnerHTML(event.data);
+        setMessageInnerHTML(event.data);
+        console.log("第二步骤成功")
+
+        saveMessage(event.data);
+    }
+
+
+    //连接关闭的回调方法
+    websocket.onclose = function () {
+        setMessageInnerHTML("WebSocket连接关闭");
+    }
+
+
+    //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
+    window.onbeforeunload = function () {
+        closeWebSocket();
+    }
+
+
+    //将消息显示在网页上
+    function setMessageInnerHTML(sendMessage) {
+        document.getElementById('message').innerHTML +=sendMessage + '<br/>';
+    }
+
+
+    //关闭WebSocket连接
+    function closeWebSocket() {
+        websocket.close();
+    }
+
+    function saveMessage(data) {
+        var parse = JSON.parse(data);
+        var propertyId,consultantId,userId,userName,userSex,userPhone,userAddress,
+            userCard,consultantName,intentionLevel,customerSource,customerStatus,
+            classify,userInfoId,userPropertyId,userErrormessageId;
+        for (var key in parse) {
+            propertyId=parse['propertyId']
+            consultantId=parse["consultantId"]
+            userId=parse["userId"]
+            userName=parse["userName"]
+            userSex=parse["userSex"]
+            userPhone=parse["userPhone"]
+            userAddress=parse["userAddress"]
+            userCard=parse["userCard"]
+            consultantName=parse["consultantName"]
+            intentionLevel=parse["intentionLevel"]
+            customerSource=parse["customerSource"]
+            customerStatus=parse["customerStatus"]
+            classify=parse["classify"]
+            userInfoId=parse["userInfoId"]
+            userPropertyId=parse["userPropertyId"]
+            userErrormessageId=parse["userErrormessageId"]
+        }
+        var joinUserInfo = parse.joinUserInfo;
+        console.log(joinUserInfo)
+        // relatedUserPhone=joinUserInfo[0][1]
+        // relatedUserSex=joinUserInfo[0][2]
+        $.ajax({
+            url:'http://localhost:8088/sd/userMessage/save',//地址
+            dataType:'json',//数据类型
+            type:'GET',//类型
+            data:{
+                propertyId:propertyId,
+                consultantId:consultantId,
+                userId:userId,
+                userName:userName,
+                userSex:userSex,
+                userPhone:userPhone,
+                userAddress:userAddress,
+                userCard:userCard,
+                consultantName:consultantName,
+                intentionLevel:intentionLevel,
+                customerSource:customerSource,
+                customerStatus:customerStatus,
+                classify:classify,
+                newJoinUserInfo:JSON.stringify(joinUserInfo),
+                userInfoId:userInfoId,
+                userPropertyId:userPropertyId,
+                userErrormessageId:userErrormessageId
+            },
+            timeout:2000,//超时
+            //请求成功
+            success:function(data,status){
+                var result = data.data.data;
+                console.log(result)
+                if (result == 0){
+                    console.log("异常准备通知给发送端")
+                    sendErrorMessage(data)
+                }else if(result == 1){
+                    //反馈给服务器，删除未发送的消息记录
+                    $.ajax({
+                        url:'http://localhost:8088/sd/error/deleteErrorMessage',//地址
+                        dataType:'json',//数据类型
+                        type:'POST',//类型
+                        data:{
+                            userErrormessageId:data.data.userErrormessageId
+                        },
+                        timeout:2000,//超时
+                        //请求成功
+                        success:function(data,status){
+                        },
+                        //失败/超时
+                        error:function(XMLHttpRequest,textStatus,errorThrown){
+
+                        }
+                    })
+                }else{
+                    console.log("恶意传输不做处理")
+                }
+
+
+            },
+            //失败/超时
+            error:function(XMLHttpRequest,textStatus,errorThrown){
+
+            }
+        })
+    }
+
+
+    //发送消息
+    function send() {
+        var message = document.getElementById('text').value;//要发送的消息内容
+        var now=getNowFormatDate();//获取当前时间
+        document.getElementById('message').innerHTML += (now+"发送人："+role+'<br/>'+"---"+message) + '<br/>';
+        document.getElementById('message').style.color="red";
+
+        var ToSendrole=document.getElementById('roleto').value; //接收人编号：4567
+        message=message+"|"+ToSendrole//将要发送的信息和内容拼起来，以便于服务端知道消息要发给谁
+        websocket.send(message);
+    }
+
+    //发送消息
+    function sendErrorMessage(data) {
+        console.log(data)
+        var newJoinUserInfo = data.data.joinUserInfo;
+        $.ajax({
+            url:'http://localhost:8088/sd/error/errorMessage',//地址
+            dataType:'json',//数据类型
+            type:'GET',//类型
+            data:{
+                result: 0,  //0报错 1：正确
+                userInfoId:data.data.userInfoId,
+                joinUserInfo:JSON.stringify(newJoinUserInfo),
+                userPropertyId:data.data.userPropertyId
+            },
+            timeout:2000,//超时
+            //请求成功
+            success:function(data,status){
+            },
+            //失败/超时
+            error:function(XMLHttpRequest,textStatus,errorThrown){
+
+            }
+        })
+    }
+
+    //获取当前时间
+    function getNowFormatDate() {
+        var date = new Date();
+        var seperator1 = "-";
+        var seperator2 = ":";
+        var month = date.getMonth() + 1;
+        var strDate = date.getDate();
+        if (month >= 1 && month <= 9) {
+            month = "0" + month;
+        }
+        if (strDate >= 0 && strDate <= 9) {
+            strDate = "0" + strDate;
+        }
+        var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
+            + " " + date.getHours() + seperator2 + date.getMinutes()
+            + seperator2 + date.getSeconds();
+        return currentdate;
+    }
+</script>
+</html>
