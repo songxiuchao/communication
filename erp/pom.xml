@@ -12,7 +12,7 @@
 
 
     <groupId>com.sandu.communication</groupId>
-    <artifactId>sdCommunication</artifactId>
+    <artifactId>sale</artifactId>
     <packaging>jar</packaging>
     <version>1.0.0</version>
     <name>SdCommunication</name>
