@@ -36,4 +36,10 @@ public interface ListingUserDao {
      * @return
      */
     String getPropertyId(@Param("userId") Long userId);
+
+    /**
+     * 保存中间表信息
+     * @param list
+     */
+    void addMiddleInfo(ChangeUserHouseInfo list);
 }
