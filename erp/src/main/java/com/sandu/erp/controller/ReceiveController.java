@@ -11,19 +11,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.net.URLDecoder;
 import java.util.List;
 
 /**
- * @author 肖兵
- * @version v1.0.0
- * @date 2020/4/3 10:05
- * @Description Modification History: (已调通 已调通 已调通)
- * Date                 Author          Version          Description
- * ---------------------------------------------------------------------------------*
- * 2020/4/3 10:05     xiaobing          v1.0.0           Created
+ * 这个是接受云客传过来的用户信息测试类
  */
 @Controller
 @RequestMapping("/receive")

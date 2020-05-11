@@ -15,14 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 /**
- * @author 肖兵
- * @version v1.0.0
- * @date 2020/3/27 10:59
- * @Description Modification History: Ip测试类
- * Date                 Author          Version          Description
- * ---------------------------------------------------------------------------------*
- * 2020/3/27 10:59     xiaobing          v1.0.0           Created
+ * 这个是管理Ip的测试类（手动添加ip）
  */
+
 @RestController
 @RequestMapping("/ipconfig")
 public class IpConfigController {

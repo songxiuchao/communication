@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author 肖兵
  * @version v1.0.0
  * @date 2020/3/26 9:34
- * @Description Modification History: 发送用户信息测试类（可删除）  (已调通 已调通 已调通)
+ * @Description Modification History: 发送用户信息测试类（可删除）
  * Date                 Author          Version          Description
  * ---------------------------------------------------------------------------------*
  * 2020/3/26 9:34     xiaobing          v1.0.0           Created

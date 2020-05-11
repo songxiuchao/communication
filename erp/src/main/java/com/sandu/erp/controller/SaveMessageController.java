@@ -20,7 +20,7 @@ import java.util.List;
  * @author 肖兵
  * @version v1.0.0
  * @date 2020/3/27 15:13
- * @Description Modification History: 存储用户信息 (已调通 已调通 已调通)
+ * @Description Modification History: 这个是存储用户信息的测试类
  * Date                 Author          Version          Description
  * ---------------------------------------------------------------------------------*
  * 2020/3/27 15:13     xiaobing          v1.0.0           Created
@@ -32,8 +32,6 @@ public class SaveMessageController {
 
     @Autowired
     private UserService userService;
-
-
 
     @RequestMapping("/save")
     public Result saveMessage(UserInfoKh userInfoKh){

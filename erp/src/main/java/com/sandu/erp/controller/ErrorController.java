@@ -12,6 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/**
+ * 与前端交接发生错误回滚的类
+ */
+
 @RestController
 @RequestMapping("/error")
 @Slf4j

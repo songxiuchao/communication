@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * @author Administrator (取更新的用户状态，房源信息测试类)  (待测试)
+ * @author Administrator (取更新的用户状态，房源信息测试类)
+ * 这个是将咱这边客户，房源信息变更推给云客的测试类
  */
 @RestController
 @RequestMapping("/listing")

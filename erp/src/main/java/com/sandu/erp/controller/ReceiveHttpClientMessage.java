@@ -17,7 +17,7 @@ import java.util.List;
  * @author sxc
  * @version 1.0
  * @PACKAGE_NAME: com.sandu.erp.controller
- * @description:
+ * @description: 这个是接受杨总数据库传过来的信息
  * @date 2020/5/6 16:06
  */
 @RestController
